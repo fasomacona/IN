@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Práctica Tema 1 · Inteligencia de Negocios</title>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e40af;
+      --accent: #3b82f6;
+      --success: #059669;
+      --warning: #d97706;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+      --radius: 10px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.65;
+      color: #1e293b;
+      background: #f1f5f9;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.7rem;
+      margin-bottom: 0.4rem;
+    }
+
+    header p {
+      opacity: 0.9;
+      font-size: 1.05rem;
+    }
+
+    .badge-row {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      background: rgba(255,255,255,0.18);
+      padding: 0.35rem 0.9rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+
+    section {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #bfdbfe;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      color: #1e3a8a;
+      margin: 1.3rem 0 0.6rem;
+    }
+
+    p, li {
+      color: #334155;
+      margin-bottom: 0.6rem;
+    }
+
+    ul, ol {
+      margin-left: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    .info {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+    }
+
+    .success {
+      background: #ecfdf5;
+      border-left: 4px solid #059669;
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+    }
+
+    .warning {
+      background: #fffbeb;
+      border-left: 4px solid #d97706;
+      padding: 1rem 1.2rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+    }
+
+    .time {
+      display: inline-block;
+      background: #1e40af;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
+      border-radius: 6px;
+      margin-right: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+    }
+
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 0.7rem 0.9rem;
+      text-align: left;
+    }
+
+    th {
+      background: #1e40af;
+      color: white;
+    }
+
+    tr:nth-child(even) { background: #f8fafc; }
+
+    .deliverable {
+      background: #f0fdf4;
+      border: 1px dashed #16a34a;
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    .checklist li {
+      list-style: none;
+      margin-left: 0;
+      padding-left: 1.6rem;
+      position: relative;
+    }
+
+    .checklist li::before {
+      content: "☐";
+      position: absolute;
+      left: 0;
+      color: #3b82f6;
+      font-size: 1.1rem;
+    }
+
+    @media print {
+      body { background: white; }
+      section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+      header { background: #1e3a8a !important; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Práctica · Tema 1</h1>
+  <p>Introducción a la Inteligencia de Negocios</p>
+  <div class="badge-row">
+    <span class="badge">Duración: 2 horas</span>
+    <span class="badge">Modalidad: Individual o en equipos de 2</span>
+    <span class="badge">Asignatura: IFF-1016</span>
+  </div>
+</header>
+
+<main>
+
+  <!-- OBJETIVO -->
+  <section>
+    <h2>1. Objetivo de la práctica</h2>
+    <p>
+      Que el estudiante aplique los conceptos básicos del Tema 1 diseñando un <strong>Data Mart</strong> sencillo, 
+      identificando variables de medición y de análisis, diferenciando sistemas OLTP de OLAP y proponiendo 
+      una arquitectura básica de Inteligencia de Negocios para un caso realista.
+    </p>
+    <div class="success">
+      <strong>Competencia que se desarrolla:</strong><br>
+      Identificar los conceptos básicos, herramientas y componentes de la Inteligencia de Negocios.
+    </div>
+  </section>
+
+  <!-- MATERIALES -->
+  <section>
+    <h2>2. Materiales necesarios</h2>
+    <ul>
+      <li>Computadora con acceso a internet (opcional pero recomendable)</li>
+      <li>Procesador de texto (Word, Google Docs o similar) o papel y lápiz</li>
+      <li>Herramienta de dibujo simple (PowerPoint, draw.io, Lucidchart, o dibujo a mano)</li>
+      <li>Esta hoja de práctica</li>
+    </ul>
+    <div class="info">
+      <strong>No se requiere instalar software especializado.</strong> Todo se puede realizar con herramientas básicas.
+    </div>
+  </section>
+
+  <!-- CASO DE ESTUDIO -->
+  <section>
+    <h2>3. Caso de estudio: “SuperMart del Norte”</h2>
+    
+    <p>
+      <strong>SuperMart del Norte</strong> es una cadena de 12 supermercados ubicados en 4 ciudades del norte de México 
+      (Monterrey, Saltillo, Torreón y Chihuahua). Actualmente maneja su información de la siguiente manera:
+    </p>
+
+    <ul>
+      <li>Cada sucursal tiene su propio sistema de punto de venta (POS) que registra las ventas diarias.</li>
+      <li>El área de compras utiliza un sistema diferente para gestionar proveedores y pedidos.</li>
+      <li>Recursos Humanos tiene otro sistema para el control de empleados y turnos.</li>
+      <li>La gerencia general recibe reportes en Excel que cada área elabora manualmente cada fin de mes.</li>
+      <li>Los reportes llegan tarde, muchas veces con datos inconsistentes y no permiten responder preguntas como:
+        <em>“¿Qué productos se venden juntos con más frecuencia los fines de semana en Monterrey?”</em> o 
+        <em>“¿Cuál fue el margen de utilidad por categoría de producto en el último trimestre?”</em>
+      </li>
+    </ul>
+
+    <div class="warning">
+      <strong>Problema central:</strong> La empresa no tiene una visión integrada ni histórica de su información. 
+      Las decisiones se toman con datos incompletos, desactualizados o inconsistentes.
+    </div>
+  </section>
+
+  <!-- ACTIVIDADES -->
+  <section>
+    <h2>4. Actividades a realizar</h2>
+
+    <!-- Actividad 1 -->
+    <h3><span class="time">25 min</span> Actividad 1 – Diagnóstico de sistemas (OLTP vs OLAP)</h3>
+    <p>Con base en el caso de SuperMart del Norte, responde lo siguiente:</p>
+    
+    <div class="box">
+      <strong>1.1</strong> Identifica al menos <strong>3 sistemas OLTP</strong> que actualmente utiliza la empresa y explica por qué son OLTP.<br><br>
+      <strong>1.2</strong> Explica por qué los reportes mensuales en Excel <strong>no constituyen</strong> una solución OLAP / de Inteligencia de Negocios.<br><br>
+      <strong>1.3</strong> Menciona 2 limitaciones concretas que tiene la empresa al no contar con un Data Warehouse o Data Mart.
+    </div>
+
+    <!-- Actividad 2 -->
+    <h3><span class="time">35 min</span> Actividad 2 – Diseño de un Data Mart</h3>
+    <p>
+      La gerencia quiere empezar con un <strong>Data Mart de Ventas</strong> (enfoque departamental) 
+      antes de construir un Data Warehouse corporativo completo.
+    </p>
+
+    <div class="box">
+      <strong>2.1 Variables de medición (Hechos / Métricas)</strong><br>
+      Propón al menos <strong>4 variables de medición</strong> relevantes para el área de ventas.<br>
+      Ejemplo de formato: “Monto total de la venta”, “Cantidad de piezas vendidas”…
+      <br><br>
+      <strong>2.2 Variables de análisis (Dimensiones)</strong><br>
+      Propón al menos <strong>5 dimensiones</strong> con sus posibles jerarquías o atributos.<br>
+      Ejemplo: Dimensión Tiempo → Año / Trimestre / Mes / Día
+      <br><br>
+      <strong>2.3 Modelo estrella (Star Schema)</strong><br>
+      Dibuja un diagrama sencillo del modelo estrella que incluya:
+      <ul>
+        <li>Una tabla de hechos (Fact) en el centro</li>
+        <li>Las tablas de dimensiones alrededor</li>
+        <li>Los campos principales de cada tabla (no es necesario poner todos los atributos)</li>
+      </ul>
+    </div>
+
+    <div class="info">
+      <strong>Sugerencia:</strong> Puedes usar draw.io (app.diagrams.net), PowerPoint o incluso dibujarlo a mano y tomarle foto.
+    </div>
+
+    <!-- Actividad 3 -->
+    <h3><span class="time">25 min</span> Actividad 3 – Arquitectura de la solución BI</h3>
+    <p>Diseña la arquitectura básica de la solución de Inteligencia de Negocios para SuperMart del Norte.</p>
+
+    <div class="box">
+      <strong>3.1</strong> Elabora un diagrama (puede ser de bloques) que muestre el flujo de datos con al menos estos componentes:
+      <ul>
+        <li>Fuentes de datos (sistemas operacionales)</li>
+        <li>Proceso ETL</li>
+        <li>Data Mart de Ventas</li>
+        <li>Capa de análisis / presentación (reportes, dashboards, etc.)</li>
+      </ul>
+      <br>
+      <strong>3.2</strong> Explica brevemente (3-5 líneas) qué haría el proceso ETL en este caso concreto.
+    </div>
+
+    <!-- Actividad 4 -->
+    <h3><span class="time">20 min</span> Actividad 4 – Minería de datos y preguntas de negocio</h3>
+    
+    <div class="box">
+      <strong>4.1</strong> A partir de los 5 tipos de información que proporciona la minería de datos 
+      (Asociación, Secuencia, Clasificación, Agrupamiento y Previsión), 
+      elabora <strong>una pregunta de negocio</strong> que SuperMart del Norte podría responder con cada tipo.
+      <br><br>
+      Ejemplo de formato:<br>
+      • Asociación → “¿Qué productos se compran juntos con mayor frecuencia los fines de semana?”
+      <br><br>
+      <strong>4.2</strong> Elige una de las preguntas anteriores y explica qué valor aportaría a la toma de decisiones de la empresa.
+    </div>
+
+    <!-- Actividad 5 -->
+    <h3><span class="time">15 min</span> Actividad 5 – Reflexión final</h3>
+    <div class="box">
+      Responde en un párrafo corto (máximo 10 líneas):<br><br>
+      ¿Por qué consideras que implementar un Data Mart de Ventas sería un mejor primer paso que intentar construir 
+      directamente un Data Warehouse corporativo completo para SuperMart del Norte?
+    </div>
+  </section>
+
+  <!-- ENTREGABLES -->
+  <section>
+    <h2>5. Entregables</h2>
+    <p>Al finalizar la práctica deberás entregar un documento (PDF o Word) que contenga:</p>
+    
+    <ul class="checklist">
+      <li>Respuestas de la Actividad 1 (Diagnóstico OLTP vs OLAP)</li>
+      <li>Listado de variables de medición y dimensiones (Actividad 2.1 y 2.2)</li>
+      <li>Diagrama del modelo estrella (Actividad 2.3)</li>
+      <li>Diagrama de arquitectura BI + explicación del ETL (Actividad 3)</li>
+      <li>Preguntas de minería de datos + valor de negocio (Actividad 4)</li>
+      <li>Reflexión final (Actividad 5)</li>
+      <li>Portada con: nombre del alumno, número de control, fecha y nombre de la práctica</li>
+    </ul>
+
+    <div class="deliverable">
+      <strong>Nombre sugerido del archivo:</strong><br>
+      <code>Practica1_BI_ApellidoNombre.pdf</code>
+    </div>
+  </section>
+
+  <!-- EVALUACIÓN -->
+  <section>
+    <h2>6. Criterios de evaluación</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>Ponderación</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Correcta identificación de sistemas OLTP y limitaciones actuales</td>
+          <td>15%</td>
+        </tr>
+        <tr>
+          <td>Calidad y pertinencia de las variables de medición y dimensiones</td>
+          <td>25%</td>
+        </tr>
+        <tr>
+          <td>Claridad y corrección del modelo estrella</td>
+          <td>20%</td>
+        </tr>
+        <tr>
+          <td>Arquitectura BI y explicación del proceso ETL</td>
+          <td>15%</td>
+        </tr>
+        <tr>
+          <td>Preguntas de minería de datos y valor de negocio</td>
+          <td>15%</td>
+        </tr>
+        <tr>
+          <td>Reflexión final y presentación del documento</td>
+          <td>10%</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- RECOMENDACIONES -->
+  <section>
+    <h2>7. Recomendaciones para el estudiante</h2>
+    <ul>
+      <li>Lee completo el caso antes de empezar a responder.</li>
+      <li>No busques la “respuesta perfecta”. Se valora el razonamiento y la aplicación de los conceptos.</li>
+      <li>Si trabajas en equipo de 2 personas, ambos deben participar en todas las actividades.</li>
+      <li>Guarda capturas o fotos claras de tus diagramas.</li>
+      <li>Revisa que hayas cubierto todos los puntos de los entregables antes de finalizar.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  Práctica diseñada para la asignatura <strong>Inteligencia de Negocios (IFF-1016)</strong><br>
+  Tecnológico Nacional de México · Tema 1: Introducción a la Inteligencia de Negocios
+</footer>
+
+</body>
+</html>

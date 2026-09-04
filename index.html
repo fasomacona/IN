@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tema 1 · Introducción a la Inteligencia de Negocios</title>
+  <meta name="description" content="Material completo del Tema 1 de la asignatura Inteligencia de Negocios (IFF-1016) - Tecnológico Nacional de México" />
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e40af;
+      --accent: #3b82f6;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --border: #e2e8f0;
+      --success: #059669;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      color: #1e293b;
+      background: #f1f5f9;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      color: white;
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo span {
+      background: #3b82f6;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #e2e8f0;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    nav a:hover {
+      background: rgba(255,255,255,0.15);
+      color: white;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: white;
+      padding: 4rem 1.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      margin-bottom: 1rem;
+      font-weight: 800;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+      opacity: 0.95;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      margin: 0.3rem;
+    }
+
+    /* Main */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    section {
+      margin-bottom: 3.5rem;
+      scroll-margin-top: 90px;
+    }
+
+    h2 {
+      font-size: 1.9rem;
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 3px solid var(--accent);
+      display: inline-block;
+    }
+
+    h3 {
+      font-size: 1.4rem;
+      color: var(--secondary);
+      margin: 2rem 0 1rem;
+    }
+
+    h4 {
+      font-size: 1.15rem;
+      color: #1e40af;
+      margin: 1.5rem 0 0.7rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: #334155;
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px -5px rgb(0 0 0 / 0.12);
+    }
+
+    .card h4 {
+      margin-top: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      background: #dbeafe;
+      color: #1e40af;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    /* Tables */
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      padding: 0.9rem 1.1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: #1e40af;
+      color: white;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    tr:hover {
+      background: #eff6ff;
+    }
+
+    /* Lists */
+    ul, ol {
+      margin: 0.8rem 0 1.2rem 1.5rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      color: #334155;
+    }
+
+    /* Highlight boxes */
+    .info-box {
+      background: #eff6ff;
+      border-left: 5px solid #3b82f6;
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 1.5rem 0;
+    }
+
+    .success-box {
+      background: #ecfdf5;
+      border-left: 5px solid #059669;
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 1.5rem 0;
+    }
+
+    .warning-box {
+      background: #fffbeb;
+      border-left: 5px solid #d97706;
+      padding: 1.2rem 1.5rem;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 1.5rem 0;
+    }
+
+    /* Architecture diagram */
+    .architecture {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      margin: 2rem 0;
+      align-items: center;
+    }
+
+    .arch-layer {
+      background: white;
+      border: 2px solid #3b82f6;
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      font-weight: 600;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .arch-layer.sources { background: #fef3c7; border-color: #d97706; }
+    .arch-layer.etl { background: #dbeafe; border-color: #2563eb; }
+    .arch-layer.storage { background: #dcfce7; border-color: #16a34a; }
+    .arch-layer.analysis { background: #ede9fe; border-color: #7c3aed; }
+    .arch-layer.presentation { background: #fce7f3; border-color: #db2777; }
+
+    .arrow {
+      font-size: 1.5rem;
+      color: #64748b;
+    }
+
+    /* Tools grid */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+      margin: 1.5rem 0;
+    }
+
+    .tool-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.3rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+    }
+
+    .tool-card strong {
+      display: block;
+      color: #1e40af;
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      margin-top: 2rem;
+    }
+
+    footer a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      nav ul {
+        justify-content: center;
+      }
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+
+    /* Code style */
+    code {
+      background: #f1f5f9;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.9em;
+      color: #be185d;
+    }
+
+    .definition {
+      font-style: italic;
+      color: #475569;
+      border-left: 3px solid #94a3b8;
+      padding-left: 1rem;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-content">
+    <div class="logo">
+      <span>IFF-1016</span>
+      Inteligencia de Negocios
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#introduccion">Introducción</a></li>
+        <li><a href="#conceptos">1.1 Conceptos</a></li>
+        <li><a href="#componentes">1.2 Componentes</a></li>
+        <li><a href="#herramientas">1.3 Herramientas</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Tema 1 · Introducción a la Inteligencia de Negocios</h1>
+  <p>Material completo basado en el programa oficial del Tecnológico Nacional de México (Ingeniería en Informática)</p>
+  <div>
+    <span class="badge">SATCA: 3-2-5</span>
+    <span class="badge">Clave: IFF-1016</span>
+    <span class="badge">Carrera: Ingeniería en Informática</span>
+  </div>
+</section>
+
+<main>
+
+  <!-- INTRODUCCIÓN -->
+  <section id="introduccion">
+    <h2>¿Qué es la Inteligencia de Negocios?</h2>
+    
+    <p>
+      La <strong>Inteligencia de Negocios</strong> (Business Intelligence o BI) es el proceso de integración y tratamiento de los datos para convertirlos en información que permita apoyar a los tomadores de decisiones en la organización.
+    </p>
+
+    <div class="info-box">
+      <strong>Definición clave:</strong> 
+      La BI se compone de todas las actividades relacionadas con la organización, entrega y análisis de información. Incluye Minería de Datos, Administración del Conocimiento, Aplicaciones Analíticas, Sistemas de Reportes y principalmente <strong>Data Warehousing</strong>.
+    </div>
+
+    <p>
+      Esta asignatura aporta al perfil del Ingeniero en Informática la capacidad de comprender desde la extracción de datos de sistemas existentes hasta la explotación de la información mediante herramientas de análisis. Permite el descubrimiento de conocimiento en las bases de datos de una empresa y la creación de almacenes de datos (Data Warehouse) hasta la utilización de herramientas de minería de datos para el soporte en la toma de decisiones.
+    </p>
+
+    <h3>Objetivo del Tema 1</h3>
+    <p>
+      Proporcionar una visión integral de la importancia de la Inteligencia de Negocios en el entorno actual y cómo utilizarla como herramienta estratégica para alcanzar los objetivos de la organización.
+    </p>
+
+    <div class="success-box">
+      <strong>Competencia específica del tema:</strong><br>
+      Identificar los conceptos básicos, herramientas y componentes de la Inteligencia de Negocios.
+    </div>
+  </section>
+
+  <!-- 1.1 CONCEPTOS BÁSICOS -->
+  <section id="conceptos">
+    <h2>1.1 Conceptos Básicos</h2>
+
+    <!-- 1.1.1 Data Warehouse -->
+    <h3>1.1.1 Data Warehouse (Almacén de Datos)</h3>
+    
+    <p class="definition">
+      Un Data Warehouse es una colección de datos orientada a un tema, integrada, variable en el tiempo y no volátil, que se utiliza para apoyar el proceso de toma de decisiones gerenciales.
+    </p>
+
+    <p>
+      Fue definido formalmente por <strong>Bill Inmon</strong> (considerado el padre del Data Warehouse). A diferencia de las bases de datos operacionales (OLTP), un Data Warehouse está diseñado para el análisis histórico y la generación de reportes estratégicos.
+    </p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4><span class="card-icon">1</span> Orientado a temas</h4>
+        <p>Los datos se organizan alrededor de temas principales del negocio (clientes, productos, ventas, finanzas) en lugar de aplicaciones operativas.</p>
+      </div>
+      <div class="card">
+        <h4><span class="card-icon">2</span> Integrado</h4>
+        <p>Los datos provienen de múltiples fuentes heterogéneas y se unifican bajo un mismo formato, nomenclatura y codificación.</p>
+      </div>
+      <div class="card">
+        <h4><span class="card-icon">3</span> Variable en el tiempo</h4>
+        <p>Mantiene el historial de los datos a lo largo del tiempo (años), permitiendo análisis de tendencias y comparaciones históricas.</p>
+      </div>
+      <div class="card">
+        <h4><span class="card-icon">4</span> No volátil</h4>
+        <p>Los datos una vez cargados no se modifican ni eliminan. Solo se realizan operaciones de lectura (consultas) y carga periódica.</p>
+      </div>
+    </div>
+
+    <h4>Arquitectura general de un Data Warehouse</h4>
+    <div class="architecture">
+      <div class="arch-layer sources">Fuentes de Datos (OLTP, ERP, CRM, Archivos planos, Sistemas legados)</div>
+      <div class="arrow">↓</div>
+      <div class="arch-layer etl">Procesos ETL (Extracción · Transformación · Carga)</div>
+      <div class="arrow">↓</div>
+      <div class="arch-layer storage">Data Warehouse / Data Marts</div>
+      <div class="arrow">↓</div>
+      <div class="arch-layer analysis">Motor OLAP · Minería de Datos · Consultas ad-hoc</div>
+      <div class="arrow">↓</div>
+      <div class="arch-layer presentation">Reportes · Dashboards · Tableros de Control · KPIs</div>
+    </div>
+
+    <!-- 1.1.2 Data Mart -->
+    <h3>1.1.2 Data Mart</h3>
+    
+    <p class="definition">
+      Un Data Mart es un subconjunto de un Data Warehouse orientado a un área específica del negocio o a un departamento particular (ventas, marketing, finanzas, recursos humanos, etc.).
+    </p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Característica</th>
+            <th>Data Warehouse</th>
+            <th>Data Mart</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Alcance</strong></td>
+            <td>Toda la organización</td>
+            <td>Un departamento o área específica</td>
+          </tr>
+          <tr>
+            <td><strong>Tamaño</strong></td>
+            <td>Grande (terabytes o más)</td>
+            <td>Más pequeño y manejable</td>
+          </tr>
+          <tr>
+            <td><strong>Tiempo de implementación</strong></td>
+            <td>Meses o años</td>
+            <td>Semanas o pocos meses</td>
+          </tr>
+          <tr>
+            <td><strong>Enfoque</strong></td>
+            <td>Corporativo / Estratégico</td>
+            <td>Departamental / Táctico</td>
+          </tr>
+          <tr>
+            <td><strong>Costo</strong></td>
+            <td>Alto</td>
+            <td>Moderado</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong>Tipos de Data Mart:</strong>
+      <ul>
+        <li><strong>Dependiente:</strong> Se crea a partir de un Data Warehouse corporativo ya existente.</li>
+        <li><strong>Independiente:</strong> Se construye directamente desde las fuentes operacionales (sin DW previo).</li>
+        <li><strong>Híbrido:</strong> Combina datos del DW corporativo con datos locales del departamento.</li>
+      </ul>
+    </div>
+
+    <!-- 1.1.3 Tipos de sistemas -->
+    <h3>1.1.3 Tipos de Sistemas de Información</h3>
+
+    <p>En el contexto de Inteligencia de Negocios es fundamental distinguir entre los sistemas operacionales y los sistemas de soporte a la decisión:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4><span class="card-icon">OLTP</span> Sistemas Transaccionales</h4>
+        <p><strong>On-Line Transaction Processing</strong></p>
+        <ul>
+          <li>Procesan transacciones del día a día</li>
+          <li>Alta frecuencia de inserción/actualización</li>
+          <li>Datos actuales y detallados</li>
+          <li>Optimizados para escritura</li>
+          <li>Ejemplos: ERP, CRM, sistemas de punto de venta</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4><span class="card-icon">OLAP</span> Sistemas Analíticos</h4>
+        <p><strong>On-Line Analytical Processing</strong></p>
+        <ul>
+          <li>Orientados al análisis y consulta</li>
+          <li>Principalmente operaciones de lectura</li>
+          <li>Datos históricos y agregados</li>
+          <li>Optimizados para consultas complejas</li>
+          <li>Ejemplos: Data Warehouse, cubos multidimensionales</li>
+        </ul>
+      </div>
+    </div>
+
+    <h4>Comparación OLTP vs OLAP</h4>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Aspecto</th>
+            <th>OLTP</th>
+            <th>OLAP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Propósito</td>
+            <td>Operaciones diarias</td>
+            <td>Análisis y toma de decisiones</td>
+          </tr>
+          <tr>
+            <td>Modelo de datos</td>
+            <td>Relacional (normalizado)</td>
+            <td>Multidimensional (estrella/copo de nieve)</td>
+          </tr>
+          <tr>
+            <td>Consultas</td>
+            <td>Simples y predefinidas</td>
+            <td>Complejas y ad-hoc</td>
+          </tr>
+          <tr>
+            <td>Usuarios</td>
+            <td>Cientos o miles de usuarios concurrentes</td>
+            <td>Analistas y gerentes (pocos)</td>
+          </tr>
+          <tr>
+            <td>Actualización</td>
+            <td>Continua (en tiempo real)</td>
+            <td>Periódica (batch)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 1.1.4 y 1.1.5 Variables -->
+    <h3>1.1.4 Variables de Medición</h3>
+    <p>
+      Las <strong>variables de medición</strong> (también llamadas <em>hechos</em> o <em>métricas</em>) son los valores numéricos que se desean analizar. Representan el “qué” se quiere medir.
+    </p>
+    <ul>
+      <li>Monto de ventas</li>
+      <li>Cantidad de unidades vendidas</li>
+      <li>Costo de producción</li>
+      <li>Número de clientes atendidos</li>
+      <li>Tiempo de entrega</li>
+      <li>Margen de utilidad</li>
+    </ul>
+
+    <h3>1.1.5 Variables de Análisis</h3>
+    <p>
+      Las <strong>variables de análisis</strong> (también llamadas <em>dimensiones</em>) son los ejes o perspectivas desde las cuales se analizan las métricas. Representan el “por qué”, “dónde”, “cuándo” o “quién”.
+    </p>
+    <ul>
+      <li><strong>Tiempo:</strong> Año, trimestre, mes, día</li>
+      <li><strong>Geografía:</strong> País, región, ciudad, sucursal</li>
+      <li><strong>Producto:</strong> Categoría, línea, marca, SKU</li>
+      <li><strong>Cliente:</strong> Segmento, tipo, zona</li>
+      <li><strong>Empleado / Vendedor</strong></li>
+      <li><strong>Canal de venta</strong></li>
+    </ul>
+
+    <div class="success-box">
+      <strong>Ejemplo práctico:</strong><br>
+      “¿Cuánto se vendió (variable de medición) de la categoría Electrónica (dimensión Producto) en la región Norte (dimensión Geografía) durante el segundo trimestre de 2025 (dimensión Tiempo)?”
+    </div>
+  </section>
+
+  <!-- 1.2 COMPONENTES -->
+  <section id="componentes">
+    <h2>1.2 Componentes de la Inteligencia de Negocios</h2>
+
+    <p>
+      La Inteligencia de Negocios no es una sola tecnología, sino un conjunto de componentes que trabajan de forma integrada. A continuación se describen los principales:
+    </p>
+
+    <!-- 1.2.1 Minería de Datos -->
+    <h3>1.2.1 Minería de Datos (Data Mining)</h3>
+    
+    <p class="definition">
+      Es el proceso no trivial de identificar patrones válidos, novedosos, potencialmente útiles y, en última instancia, comprensibles a partir de los datos.
+    </p>
+
+    <p>
+      Utiliza herramientas de software orientadas a descubrir relaciones ocultas que el usuario no necesariamente sabe que está buscando. Separa grandes volúmenes de datos e identifica relaciones entre ellos.
+    </p>
+
+    <h4>Cinco tipos de información que proporciona la Minería de Datos:</h4>
+
+    <div class="card-grid">
+      <div class="card">
+        <h4>1. Asociación</h4>
+        <p>Ocurrencias ligadas a un evento.<br>
+        <em>Ejemplo:</em> Cuando se compra atún, también se compra mayonesa.</p>
+      </div>
+      <div class="card">
+        <h4>2. Secuencia</h4>
+        <p>Eventos ligados a lo largo del tiempo.<br>
+        <em>Ejemplo:</em> Si se compra una casa, el 45% de las veces se compra una cocina dentro de un mes.</p>
+      </div>
+      <div class="card">
+        <h4>3. Clasificación</h4>
+        <p>Encontrar características de los clientes para determinar qué tipos de promociones serán más eficientes.</p>
+      </div>
+      <div class="card">
+        <h4>4. Agrupamiento (Clustering)</h4>
+        <p>Descubrir diferentes agrupamientos de datos. Útil para detectar defectos en fabricación o segmentar clientes.</p>
+      </div>
+      <div class="card">
+        <h4>5. Previsión (Predicción)</h4>
+        <p>Estimar comportamientos futuros.<br>
+        <em>Ejemplo:</em> Probabilidad de que un cliente renueve su contrato.</p>
+      </div>
+    </div>
+
+    <!-- 1.2.2 Administración del Conocimiento -->
+    <h3>1.2.2 Administración del Conocimiento (Knowledge Management)</h3>
+    <p>
+      Es el proceso de capturar, distribuir y utilizar de manera efectiva el conocimiento de la organización. En el contexto de BI, convierte los datos y la información en conocimiento accionable que puede ser compartido y reutilizado.
+    </p>
+    <ul>
+      <li>Captura del conocimiento explícito e implícito</li>
+      <li>Almacenamiento en repositorios estructurados</li>
+      <li>Distribución a través de portales y sistemas de colaboración</li>
+      <li>Aplicación en la toma de decisiones estratégicas</li>
+    </ul>
+
+    <!-- 1.2.3 Aplicaciones Analíticas -->
+    <h3>1.2.3 Aplicaciones Analíticas</h3>
+    <p>
+      Son sistemas especializados que utilizan los datos del Data Warehouse o Data Marts para realizar análisis avanzados orientados a áreas específicas del negocio:
+    </p>
+    <ul>
+      <li>Análisis de rentabilidad de clientes</li>
+      <li>Análisis de canasta de mercado (Market Basket Analysis)</li>
+      <li>Predicción de demanda</li>
+      <li>Detección de fraude</li>
+      <li>Análisis de riesgo crediticio</li>
+      <li>Optimización de inventarios</li>
+    </ul>
+
+    <!-- 1.2.4 Sistemas de Reportes -->
+    <h3>1.2.4 Sistemas de Reportes</h3>
+    <p>
+      Permiten generar y distribuir reportes estáticos o dinámicos a partir de los datos almacenados. Incluyen:
+    </p>
+    <ul>
+      <li>Reportes operativos diarios / semanales</li>
+      <li>Reportes ejecutivos resumidos</li>
+      <li>Reportes ad-hoc definidos por el usuario</li>
+      <li>Suscripciones y envío automático por correo</li>
+    </ul>
+
+    <!-- 1.2.5 Multidimensionalidad -->
+    <h3>1.2.5 Multidimensionalidad</h3>
+    <p>
+      Es el enfoque de modelado de datos que organiza la información en <strong>cubos multidimensionales</strong> (hipercubos), donde las medidas (hechos) se analizan a través de múltiples dimensiones.
+    </p>
+
+    <div class="info-box">
+      <strong>Operaciones analíticas básicas de los sistemas OLAP:</strong>
+      <ul>
+        <li><strong>Slice:</strong> Seleccionar una “rebanada” del cubo (fijar una dimensión)</li>
+        <li><strong>Dice:</strong> Seleccionar un subcubo (fijar varios valores de dimensiones)</li>
+        <li><strong>Drill-down:</strong> Bajar al detalle (de año → mes → día)</li>
+        <li><strong>Roll-up:</strong> Subir al resumen (de día → mes → año)</li>
+        <li><strong>Pivot (Rotación):</strong> Cambiar la orientación de las dimensiones</li>
+      </ul>
+    </div>
+
+    <p>
+      Ejemplo de pregunta que un sistema OLAP responde:<br>
+      <em>“¿Por qué las ventas de automóviles de un determinado modelo disminuyeron en el segundo trimestre?”</em>
+    </p>
+
+    <!-- 1.2.6 Data Warehouse (refuerzo) -->
+    <h3>1.2.6 Data Warehouse (como componente central)</h3>
+    <p>
+      El Data Warehouse es el componente central de la arquitectura de BI. Actúa como el repositorio único de la verdad (Single Source of Truth) que alimenta todos los demás componentes: minería de datos, reportes, dashboards, OLAP y aplicaciones analíticas.
+    </p>
+  </section>
+
+  <!-- 1.3 HERRAMIENTAS -->
+  <section id="herramientas">
+    <h2>1.3 Principales Herramientas de la Inteligencia de Negocios</h2>
+
+    <p>
+      Existen múltiples herramientas comerciales y de código abierto para implementar soluciones de BI. El programa oficial menciona especialmente las siguientes:
+    </p>
+
+    <div class="tools-grid">
+      <div class="tool-card">
+        <strong>Oracle</strong>
+        <p>Oracle Database + Oracle Analytics Cloud + Oracle Data Integrator. Solución robusta empresarial.</p>
+      </div>
+      <div class="tool-card">
+        <strong>IBM DB2</strong>
+        <p>DB2 + IBM Cognos Analytics. Fuerte en entornos mainframe y análisis avanzado.</p>
+      </div>
+      <div class="tool-card">
+        <strong>Microsoft SQL Server</strong>
+        <p>SQL Server + Analysis Services (SSAS) + Reporting Services (SSRS) + Integration Services (SSIS) + Power BI.</p>
+      </div>
+      <div class="tool-card">
+        <strong>Power BI</strong>
+        <p>Herramienta moderna de Microsoft para visualización, dashboards interactivos y self-service BI.</p>
+      </div>
+      <div class="tool-card">
+        <strong>Tableau</strong>
+        <p>Líder en visualización de datos. Excelente para exploración visual y storytelling con datos.</p>
+      </div>
+      <div class="tool-card">
+        <strong>SAP BusinessObjects</strong>
+        <p>Suite completa de BI orientada a grandes corporativos.</p>
+      </div>
+      <div class="tool-card">
+        <strong>Qlik Sense / QlikView</strong>
+        <p>Motor asociativo que permite explorar relaciones entre datos de forma libre.</p>
+      </div>
+      <div class="tool-card">
+        <strong>Pentaho / JasperSoft</strong>
+        <p>Opciones de código abierto (open source) para BI y reportes.</p>
+      </div>
+    </div>
+
+    <div class="warning-box">
+      <strong>Nota importante:</strong> Aunque el programa menciona “Wired for OLAP”, actualmente las herramientas más utilizadas en la industria y en entornos académicos son Power BI, Tableau, SQL Server Analysis Services y soluciones en la nube (Azure Synapse, Google BigQuery, Amazon Redshift + QuickSight).
+    </div>
+
+    <h3>Propiedades deseables de una solución de BI</h3>
+    <ul>
+      <li><strong>Amplitud:</strong> Capacidad de integrar datos de múltiples fuentes</li>
+      <li><strong>Profundidad:</strong> Nivel de detalle histórico disponible</li>
+      <li><strong>Calidad de los datos:</strong> Exactitud, completitud y consistencia</li>
+      <li><strong>Almacenamiento inteligente y escalable</strong></li>
+      <li><strong>Análisis avanzado</strong> (predictivo, prescriptivo)</li>
+      <li><strong>Facilidad de uso</strong> para usuarios de negocio (self-service)</li>
+    </ul>
+  </section>
+
+  <!-- RESUMEN FINAL -->
+  <section>
+    <h2>Resumen del Tema 1</h2>
+    <div class="success-box">
+      <p>Al finalizar este tema el estudiante debe ser capaz de:</p>
+      <ul>
+        <li>Definir qué es la Inteligencia de Negocios y su importancia estratégica</li>
+        <li>Diferenciar Data Warehouse de Data Mart</li>
+        <li>Distinguir sistemas OLTP de sistemas OLAP</li>
+        <li>Identificar variables de medición y variables de análisis</li>
+        <li>Explicar los principales componentes de una solución de BI</li>
+        <li>Reconocer las herramientas más utilizadas en el mercado</li>
+        <li>Comprender el flujo general: Fuentes → ETL → Almacén → Análisis → Presentación</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Material educativo basado en el programa oficial de la asignatura<br>
+    <strong>Inteligencia de Negocios (IFF-1016)</strong> · Tecnológico Nacional de México<br>
+    Ingeniería en Informática · © TecNM
+  </p>
+  <p style="margin-top: 0.8rem; font-size: 0.9rem;">
+    Página generada para uso académico · Lista para subir a GitHub Pages
+  </p>
+</footer>
+
+</body>
+</html>
