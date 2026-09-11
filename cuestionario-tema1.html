@@ -264,14 +264,7 @@
 
 <div class="container">
 
-  <!-- ADVERTENCIA DE CONFIGURACIÓN -->
-  <div class="config-warning" id="configWarning">
-    <strong>⚠️ Configuración requerida:</strong> Antes de usar este cuestionario debes crear un proyecto en 
-    <a href="https://supabase.com" target="_blank">Supabase</a> y pegar tu URL y Anon Key en el código 
-    (busca las variables <code>SUPABASE_URL</code> y <code>SUPABASE_ANON_KEY</code>).
-    También debes ejecutar el SQL de creación de la tabla (ver instrucciones al final).
-  </div>
-
+  
   <!-- FORMULARIO PRINCIPAL -->
   <form id="quizForm">
     
@@ -532,7 +525,7 @@
   // Inicializar cliente de Supabase
   let supabaseClient = null;
   try {
-    if (SUPABASE_URL !== 'https://TU-PROYECTO.supabase.co' && SUPABASE_ANON_KEY !== 'TU-ANON-KEY-AQUI') {
+    if (SUPABASE_URL !== 'https://zbfeylrgrrbejscqxurn.supabase.co' && SUPABASE_ANON_KEY !== 'sb_publishable_78pK260KQmpPD_W36wJF4g_tqlUjYzB') {
       supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       document.getElementById('configWarning').style.display = 'none';
     }
