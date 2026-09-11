@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuestionario Tema 1 · Inteligencia de Negocios</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --primary: #0f172a;
+      --secondary: #1e40af;
+      --accent: #3b82f6;
+      --success: #059669;
+      --danger: #dc2626;
+      --light: #f8fafc;
+      --border: #e2e8f0;
+      --radius: 12px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      padding: 1.8rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+    header p { opacity: 0.9; }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 2rem 1.2rem 3rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 1.6rem 1.8rem;
+      margin-bottom: 1.4rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      border: 1px solid var(--border);
+    }
+
+    .card h2 {
+      font-size: 1.2rem;
+      color: var(--secondary);
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    input[type="text"], input[type="email"] {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: border 0.2s;
+    }
+
+    input[type="text"]:focus, input[type="email"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
+
+    .question {
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+    .question-number {
+      display: inline-block;
+      background: #1e40af;
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 28px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-right: 0.5rem;
+    }
+
+    .question-text {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.8rem;
+      display: inline;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-left: 0.5rem;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .option:hover { background: #f1f5f9; }
+
+    .option input {
+      margin-top: 0.25rem;
+      accent-color: #1e40af;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .option span { flex: 1; }
+
+    .btn {
+      display: inline-block;
+      background: #1e40af;
+      color: white;
+      border: none;
+      padding: 0.85rem 2rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: 100%;
+    }
+
+    .btn:hover { background: #1e3a8a; }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #1e40af);
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .result-box {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .result-box.show { display: block; }
+
+    .score-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e40af, #3b82f6);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .score-circle small {
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .message {
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .message.success {
+      background: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      display: block;
+    }
+
+    .message.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+      display: block;
+    }
+
+    .config-warning {
+      background: #fffbeb;
+      border: 1px solid #fcd34d;
+      color: #92400e;
+      padding: 1rem 1.2rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .config-warning code {
+      background: #fef3c7;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #64748b;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .card { padding: 1.2rem; }
+      header h1 { font-size: 1.35rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Cuestionario · Tema 1</h1>
+  <p>Introducción a la Inteligencia de Negocios (IFF-1016)</p>
+</header>
+
+<div class="container">
+
+  <!-- ADVERTENCIA DE CONFIGURACIÓN -->
+  <div class="config-warning" id="configWarning">
+    <strong>⚠️ Configuración requerida:</strong> Antes de usar este cuestionario debes crear un proyecto en 
+    <a href="https://supabase.com" target="_blank">Supabase</a> y pegar tu URL y Anon Key en el código 
+    (busca las variables <code>SUPABASE_URL</code> y <code>SUPABASE_ANON_KEY</code>).
+    También debes ejecutar el SQL de creación de la tabla (ver instrucciones al final).
+  </div>
+
+  <!-- FORMULARIO PRINCIPAL -->
+  <form id="quizForm">
+    
+    <!-- Datos del estudiante -->
+    <div class="card">
+      <h2>Datos del estudiante</h2>
+      <label for="nombre">Nombre completo *</label>
+      <input type="text" id="nombre" name="nombre" required placeholder="Ej. Juan Pérez López" />
+
+      <label for="nocontrol">Número de control *</label>
+      <input type="text" id="nocontrol" name="nocontrol" required placeholder="Ej. 20191234" />
+
+      <label for="email">Correo electrónico (opcional)</label>
+      <input type="email" id="email" name="email" placeholder="ejemplo@tecnm.mx" />
+    </div>
+
+    <!-- Barra de progreso -->
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- PREGUNTAS -->
+    <div class="card">
+      <h2>Preguntas (15)</h2>
+
+      <!-- 1 -->
+      <div class="question" data-q="1">
+        <span class="question-number">1</span>
+        <span class="question-text">¿Qué es la Inteligencia de Negocios (Business Intelligence)?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q1" value="a" required> <span>Un software específico de Microsoft</span></label>
+          <label class="option"><input type="radio" name="q1" value="b"> <span>El proceso de integración y tratamiento de datos para convertirlos en información que apoye la toma de decisiones</span></label>
+          <label class="option"><input type="radio" name="q1" value="c"> <span>Solo el uso de dashboards y reportes visuales</span></label>
+          <label class="option"><input type="radio" name="q1" value="d"> <span>Un tipo de base de datos relacional</span></label>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="question" data-q="2">
+        <span class="question-number">2</span>
+        <span class="question-text">¿Quién es considerado el “padre del Data Warehouse”?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q2" value="a" required> <span>Ralph Kimball</span></label>
+          <label class="option"><input type="radio" name="q2" value="b"> <span>Bill Inmon</span></label>
+          <label class="option"><input type="radio" name="q2" value="c"> <span>Edgar Codd</span></label>
+          <label class="option"><input type="radio" name="q2" value="d"> <span>Michael Stonebraker</span></label>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="question" data-q="3">
+        <span class="question-number">3</span>
+        <span class="question-text">¿Cuáles son las cuatro características principales de un Data Warehouse según Bill Inmon?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q3" value="a" required> <span>Relacional, normalizado, volátil y actual</span></label>
+          <label class="option"><input type="radio" name="q3" value="b"> <span>Orientado a temas, integrado, variable en el tiempo y no volátil</span></label>
+          <label class="option"><input type="radio" name="q3" value="c"> <span>Distribuido, orientado a objetos, temporal y seguro</span></label>
+          <label class="option"><input type="radio" name="q3" value="d"> <span>Transaccional, detallado, en tiempo real y normalizado</span></label>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="question" data-q="4">
+        <span class="question-number">4</span>
+        <span class="question-text">¿Cuál es la principal diferencia entre un Data Warehouse y un Data Mart?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q4" value="a" required> <span>El Data Mart es más grande y abarca toda la organización</span></label>
+          <label class="option"><input type="radio" name="q4" value="b"> <span>El Data Mart está orientado a un departamento o área específica, mientras que el Data Warehouse es corporativo</span></label>
+          <label class="option"><input type="radio" name="q4" value="c"> <span>No existe diferencia, son sinónimos</span></label>
+          <label class="option"><input type="radio" name="q4" value="d"> <span>El Data Warehouse solo almacena datos operacionales</span></label>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="question" data-q="5">
+        <span class="question-number">5</span>
+        <span class="question-text">¿Qué significa OLTP?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q5" value="a" required> <span>On-Line Transaction Processing</span></label>
+          <label class="option"><input type="radio" name="q5" value="b"> <span>On-Line Analytical Processing</span></label>
+          <label class="option"><input type="radio" name="q5" value="c"> <span>Offline Transaction Protocol</span></label>
+          <label class="option"><input type="radio" name="q5" value="d"> <span>Operational Layer Transaction Process</span></label>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="question" data-q="6">
+        <span class="question-number">6</span>
+        <span class="question-text">¿Qué significa OLAP?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q6" value="a" required> <span>On-Line Transaction Processing</span></label>
+          <label class="option"><input type="radio" name="q6" value="b"> <span>On-Line Analytical Processing</span></label>
+          <label class="option"><input type="radio" name="q6" value="c"> <span>Operational Layer Analysis Platform</span></label>
+          <label class="option"><input type="radio" name="q6" value="d"> <span>Offline Analytical Protocol</span></label>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="question" data-q="7">
+        <span class="question-number">7</span>
+        <span class="question-text">¿Cuál de las siguientes es una característica típica de un sistema OLAP?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q7" value="a" required> <span>Alta frecuencia de inserciones y actualizaciones</span></label>
+          <label class="option"><input type="radio" name="q7" value="b"> <span>Optimizado para consultas complejas y análisis histórico</span></label>
+          <label class="option"><input type="radio" name="q7" value="c"> <span>Modelo de datos altamente normalizado</span></label>
+          <label class="option"><input type="radio" name="q7" value="d"> <span>Soporta miles de usuarios concurrentes realizando transacciones</span></label>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="question" data-q="8">
+        <span class="question-number">8</span>
+        <span class="question-text">En un modelo multidimensional, ¿qué son las “variables de medición” (hechos)?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q8" value="a" required> <span>Los ejes de análisis como Tiempo, Producto o Región</span></label>
+          <label class="option"><input type="radio" name="q8" value="b"> <span>Los valores numéricos que se desean analizar (ventas, cantidad, costo, etc.)</span></label>
+          <label class="option"><input type="radio" name="q8" value="c"> <span>Los metadatos del Data Warehouse</span></label>
+          <label class="option"><input type="radio" name="q8" value="d"> <span>Las reglas de negocio del sistema</span></label>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="question" data-q="9">
+        <span class="question-number">9</span>
+        <span class="question-text">¿Cuál de los siguientes es un ejemplo de variable de análisis (dimensión)?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q9" value="a" required> <span>Monto total de ventas</span></label>
+          <label class="option"><input type="radio" name="q9" value="b"> <span>Cantidad de piezas vendidas</span></label>
+          <label class="option"><input type="radio" name="q9" value="c"> <span>Tiempo (Año → Trimestre → Mes → Día)</span></label>
+          <label class="option"><input type="radio" name="q9" value="d"> <span>Margen de utilidad</span></label>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="question" data-q="10">
+        <span class="question-number">10</span>
+        <span class="question-text">Según el material, la minería de datos proporciona cinco tipos de información. ¿Cuál corresponde a “Eventos ligados a lo largo del tiempo”?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q10" value="a" required> <span>Asociación</span></label>
+          <label class="option"><input type="radio" name="q10" value="b"> <span>Secuencia</span></label>
+          <label class="option"><input type="radio" name="q10" value="c"> <span>Clasificación</span></label>
+          <label class="option"><input type="radio" name="q10" value="d"> <span>Agrupamiento</span></label>
+        </div>
+      </div>
+
+      <!-- 11 -->
+      <div class="question" data-q="11">
+        <span class="question-number">11</span>
+        <span class="question-text">El ejemplo “Cuando se compra atún, también se compra mayonesa” corresponde a qué tipo de minería de datos?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q11" value="a" required> <span>Secuencia</span></label>
+          <label class="option"><input type="radio" name="q11" value="b"> <span>Asociación</span></label>
+          <label class="option"><input type="radio" name="q11" value="c"> <span>Clasificación</span></label>
+          <label class="option"><input type="radio" name="q11" value="d"> <span>Previsión</span></label>
+        </div>
+      </div>
+
+      <!-- 12 -->
+      <div class="question" data-q="12">
+        <span class="question-number">12</span>
+        <span class="question-text">¿Qué operación OLAP permite bajar del resumen al detalle (por ejemplo de Año a Mes)?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q12" value="a" required> <span>Roll-up</span></label>
+          <label class="option"><input type="radio" name="q12" value="b"> <span>Drill-down</span></label>
+          <label class="option"><input type="radio" name="q12" value="c"> <span>Slice</span></label>
+          <label class="option"><input type="radio" name="q12" value="d"> <span>Pivot</span></label>
+        </div>
+      </div>
+
+      <!-- 13 -->
+      <div class="question" data-q="13">
+        <span class="question-number">13</span>
+        <span class="question-text">¿Qué proceso se encarga de extraer datos de las fuentes operacionales, limpiarlos y cargarlos en el Data Warehouse?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q13" value="a" required> <span>OLAP</span></label>
+          <label class="option"><input type="radio" name="q13" value="b"> <span>ETL (Extract, Transform, Load)</span></label>
+          <label class="option"><input type="radio" name="q13" value="c"> <span>MDX</span></label>
+          <label class="option"><input type="radio" name="q13" value="d"> <span>KPI</span></label>
+        </div>
+      </div>
+
+      <!-- 14 -->
+      <div class="question" data-q="14">
+        <span class="question-number">14</span>
+        <span class="question-text">¿Cuál de las siguientes herramientas es mencionada en el programa oficial como principal herramienta de Inteligencia de Negocios?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q14" value="a" required> <span>Oracle, DB2 y Microsoft SQL Server</span></label>
+          <label class="option"><input type="radio" name="q14" value="b"> <span>Solo MongoDB y Cassandra</span></label>
+          <label class="option"><input type="radio" name="q14" value="c"> <span>Únicamente herramientas open source</span></label>
+          <label class="option"><input type="radio" name="q14" value="d"> <span>Photoshop y Illustrator</span></label>
+        </div>
+      </div>
+
+      <!-- 15 -->
+      <div class="question" data-q="15">
+        <span class="question-number">15</span>
+        <span class="question-text">¿Por qué se recomienda empezar con un Data Mart en lugar de un Data Warehouse corporativo completo?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="q15" value="a" required> <span>Porque el Data Mart es más grande y poderoso</span></label>
+          <label class="option"><input type="radio" name="q15" value="b"> <span>Porque se implementa más rápido, tiene menor costo y permite obtener resultados tempranos en un área específica</span></label>
+          <label class="option"><input type="radio" name="q15" value="c"> <span>Porque el Data Warehouse ya no se usa en la actualidad</span></label>
+          <label class="option"><input type="radio" name="q15" value="d"> <span>Porque el Data Mart no necesita proceso ETL</span></label>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="submit" class="btn" id="submitBtn">Enviar cuestionario</button>
+  </form>
+
+  <!-- RESULTADOS -->
+  <div class="card result-box" id="resultBox">
+    <div class="score-circle">
+      <span id="scoreValue">0</span>
+      <small>/ 15</small>
+    </div>
+    <h2 id="scoreMessage">¡Resultado!</h2>
+    <p id="scoreDetail"></p>
+    <div id="saveMessage" class="message"></div>
+    <br>
+    <button class="btn" onclick="location.reload()">Realizar de nuevo</button>
+  </div>
+
+</div>
+
+<footer>
+  Cuestionario Tema 1 · Inteligencia de Negocios (IFF-1016)<br>
+  Tecnológico Nacional de México
+</footer>
+
+<script>
+  // ============================================================
+  // CONFIGURACIÓN DE SUPABASE
+  // Reemplaza estos valores con los de tu proyecto de Supabase
+  // ============================================================
+  const SUPABASE_URL = 'https://zbfeylrgrrbejscqxurn.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_78pK260KQmpPD_W36wJF4g_tqlUjYzB';
+
+  // Respuestas correctas
+  const correctAnswers = {
+    q1: 'b',
+    q2: 'b',
+    q3: 'b',
+    q4: 'b',
+    q5: 'a',
+    q6: 'b',
+    q7: 'b',
+    q8: 'b',
+    q9: 'c',
+    q10: 'b',
+    q11: 'b',
+    q12: 'b',
+    q13: 'b',
+    q14: 'a',
+    q15: 'b'
+  };
+
+  // Inicializar cliente de Supabase
+  let supabaseClient = null;
+  try {
+    if (SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes('TU-PROYECTO')) {
+      supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      document.getElementById('configWarning').style.display = 'none';
+    }
+  } catch (e) {
+    console.warn('Supabase no configurado correctamente');
+  }
+
+  // Barra de progreso
+  const form = document.getElementById('quizForm');
+  const radios = form.querySelectorAll('input[type="radio"]');
+  const progressFill = document.getElementById('progressFill');
+
+  function updateProgress() {
+    let answered = 0;
+    for (let i = 1; i <= 15; i++) {
+      if (form.querySelector(`input[name="q${i}"]:checked`)) answered++;
+    }
+    const percent = (answered / 15) * 100;
+    progressFill.style.width = percent + '%';
+  }
+
+  radios.forEach(r => r.addEventListener('change', updateProgress));
+
+  // Envío del formulario
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    // Recoger datos
+    const nombre = document.getElementById('nombre').value.trim();
+    const nocontrol = document.getElementById('nocontrol').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    let score = 0;
+    const answers = {};
+
+    for (let i = 1; i <= 15; i++) {
+      const selected = form.querySelector(`input[name="q${i}"]:checked`);
+      const value = selected ? selected.value : null;
+      answers[`q${i}`] = value;
+      if (value === correctAnswers[`q${i}`]) score++;
+    }
+
+    // Mostrar resultado
+    form.style.display = 'none';
+    const resultBox = document.getElementById('resultBox');
+    resultBox.classList.add('show');
+    document.getElementById('scoreValue').textContent = score;
+
+    let message = '';
+    let detail = '';
+    if (score >= 13) {
+      message = '¡Excelente!';
+      detail = 'Dominas muy bien los conceptos del Tema 1.';
+    } else if (score >= 10) {
+      message = '¡Bien hecho!';
+      detail = 'Tienes un buen dominio de los conceptos. Revisa los puntos que fallaste.';
+    } else if (score >= 7) {
+      message = 'Regular';
+      detail = 'Te recomendamos repasar el material del Tema 1.';
+    } else {
+      message = 'Necesitas reforzar';
+      detail = 'Estudia nuevamente los conceptos de Data Warehouse, OLTP/OLAP y componentes de BI.';
+    }
+    document.getElementById('scoreMessage').textContent = message;
+    document.getElementById('scoreDetail').textContent = detail;
+
+    // Guardar en Supabase
+    const saveMsg = document.getElementById('saveMessage');
+
+    if (!supabaseClient) {
+      saveMsg.className = 'message error';
+      saveMsg.textContent = '⚠️ Supabase no está configurado. Los resultados no se guardaron. Revisa las instrucciones.';
+      btn.disabled = false;
+      return;
+    }
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('respuestas_cuestionario')
+        .insert([{
+          nombre: nombre,
+          numero_control: nocontrol,
+          email: email || null,
+          puntaje: score,
+          total: 15,
+          respuestas: answers,
+          fecha: new Date().toISOString()
+        }]);
+
+      if (error) throw error;
+
+      saveMsg.className = 'message success';
+      saveMsg.textContent = '✅ Resultados guardados correctamente en Supabase.';
+    } catch (err) {
+      console.error(err);
+      saveMsg.className = 'message error';
+      saveMsg.textContent = '❌ Error al guardar: ' + (err.message || 'Verifica la configuración de Supabase y la tabla.');
+    }
+
+    btn.disabled = false;
+  });
+</script>
+
+<!-- ============================================================
+     INSTRUCCIONES PARA CONFIGURAR SUPABASE
+     (Copia este bloque en un README o déjalo como comentario)
+============================================================
+
+1. Ve a https://supabase.com y crea un proyecto gratuito.
+
+2. En el SQL Editor de Supabase, ejecuta este código:
+
+CREATE TABLE respuestas_cuestionario (
+  id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  nombre TEXT NOT NULL,
+  numero_control TEXT NOT NULL,
+  email TEXT,
+  puntaje INTEGER NOT NULL,
+  total INTEGER NOT NULL DEFAULT 15,
+  respuestas JSONB,
+  fecha TIMESTAMPTZ
+);
+
+-- Permitir inserciones anónimas (para el cuestionario público)
+ALTER TABLE respuestas_cuestionario ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Permitir inserción pública"
+ON respuestas_cuestionario
+FOR INSERT
+TO anon
+WITH CHECK (true);
+
+CREATE POLICY "Permitir lectura solo autenticados"
+ON respuestas_cuestionario
+FOR SELECT
+TO authenticated
+USING (true);
+
+3. Ve a Settings → API y copia:
+   - Project URL  → pégalo en SUPABASE_URL
+   - anon public  → pégalo en SUPABASE_ANON_KEY
+
+4. Guarda el archivo y súbelo a GitHub Pages.
+
+============================================================ -->
+
+</body>
+</html>
